@@ -1,4 +1,10 @@
 {
   "name": "AwesomeProject",
-  "displayName": "AwesomeProject"
+  "displayName": "AwesomeProject",
+  "jsEngine": "hermes",
+  "expo": {
+    "name": "AwesomeProject",
+    "slug": "awesome-project",
+    "sdkVersion": "43.0.0"
+  }
 }

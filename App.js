@@ -6,9 +6,10 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import type {Node} from 'react';
+import * as Updates from 'expo-updates';
+import React, {useEffect} from 'react';
 import {
+  Alert,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -26,7 +27,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const Section = ({children, title}): Node => {
+const Section = ({children, title}) => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -52,8 +53,28 @@ const Section = ({children, title}): Node => {
   );
 };
 
-const App: () => Node = () => {
+const updateApp = async () => {
+  if (__DEV__) {
+    return;
+  }
+
+  const update = await Updates.checkForUpdateAsync();
+
+  if (update.isAvailable) {
+    Alert.alert('Update available');
+    await Updates.fetchUpdateAsync();
+    await Updates.reloadAsync();
+  }
+};
+
+const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
+
+  useEffect(() => {
+    (async () => {
+      await updateApp();
+    })();
+  });
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
